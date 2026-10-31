@@ -161,6 +161,7 @@ def agent_card(request: Request):
     })
 
 
+@app.post("/message:send")
 @app.post("/a2a/message:send")
 async def message_send(request: Request):
     principal = guard(request)
@@ -172,6 +173,7 @@ async def message_send(request: Request):
     return await run_in_threadpool(process_message, principal, body)
 
 
+@app.get("/tasks/{task_id}")
 @app.get("/a2a/tasks/{task_id}")
 def get_task(task_id: str, request: Request):
     principal = guard(request)
@@ -182,6 +184,7 @@ def get_task(task_id: str, request: Request):
     return jr(200, task_view(json.loads(r["task_json"])))
 
 
+@app.get("/tasks")
 @app.get("/a2a/tasks")
 def list_tasks(request: Request):
     principal = guard(request)
@@ -201,6 +204,7 @@ def list_tasks(request: Request):
     return jr(200, {"tasks": tasks, "nextPageToken": "", "pageSize": len(tasks), "totalSize": len(tasks)})
 
 
+@app.post("/tasks/{task_id}:cancel")
 @app.post("/a2a/tasks/{task_id}:cancel")
 def cancel_task(task_id: str, request: Request):
     principal = guard(request)
